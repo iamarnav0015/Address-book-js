@@ -28,7 +28,7 @@ class Contact {
 
     validateAddress(value, fieldName) {
         if (value.length < 2) {
-            throw new Error(`${fieldName} must have at least 4 characters.`);
+            throw new Error(`${fieldName} must have at least 2 characters.`);
         }
     }
 
@@ -95,6 +95,16 @@ class AddressBook {
         console.log("Contact updated successfully.");
     }
 
+    deleteContact(name) {
+        let index = this.contacts.findIndex(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase() === name.toLowerCase());
+        if (index === -1) {
+            console.log("Contact not found.");
+            return;
+        }
+        this.contacts.splice(index, 1);
+        console.log("Contact deleted successfully.");
+    }
+
     displayContacts() {
         if (this.contacts.length === 0) {
             console.log("No contacts found.");
@@ -114,13 +124,13 @@ try {
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
 
-    console.log("Before Editing:");
+    console.log("Before Deleting:");
     addressBook.displayContacts();
 
-    // Edit contact
-    addressBook.editContact("Nikhil Kumar", { phoneNumber: "9999999999", city: "Kanpur" });
+    // Delete contact
+    addressBook.deleteContact("Nikhil Kumar");
 
-    console.log("After Editing:");
+    console.log("After Deleting:");
     addressBook.displayContacts();
 
 } catch (error) {
