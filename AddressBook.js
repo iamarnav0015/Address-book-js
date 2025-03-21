@@ -71,6 +71,30 @@ class AddressBook {
         console.log("Contact added successfully.");
     }
 
+    findContact(name) {
+        return this.contacts.find(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase() === name.toLowerCase());
+    }
+
+    editContact(name, updatedDetails) {
+        let contact = this.findContact(name);
+        if (!contact) {
+            console.log("Contact not found.");
+            return;
+        }
+
+        // Updating fields if provided in updatedDetails
+        if (updatedDetails.firstName) contact.validateName(updatedDetails.firstName, "First Name"), contact.firstName = updatedDetails.firstName;
+        if (updatedDetails.lastName) contact.validateName(updatedDetails.lastName, "Last Name"), contact.lastName = updatedDetails.lastName;
+        if (updatedDetails.address) contact.validateAddress(updatedDetails.address, "Address"), contact.address = updatedDetails.address;
+        if (updatedDetails.city) contact.validateAddress(updatedDetails.city, "City"), contact.city = updatedDetails.city;
+        if (updatedDetails.state) contact.validateAddress(updatedDetails.state, "State"), contact.state = updatedDetails.state;
+        if (updatedDetails.zip) contact.validateZip(updatedDetails.zip), contact.zip = updatedDetails.zip;
+        if (updatedDetails.phoneNumber) contact.validatePhoneNumber(updatedDetails.phoneNumber), contact.phoneNumber = updatedDetails.phoneNumber;
+        if (updatedDetails.email) contact.validateEmail(updatedDetails.email), contact.email = updatedDetails.email;
+
+        console.log("Contact updated successfully.");
+    }
+
     displayContacts() {
         if (this.contacts.length === 0) {
             console.log("No contacts found.");
@@ -90,7 +114,15 @@ try {
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
 
+    console.log("Before Editing:");
     addressBook.displayContacts();
+
+    // Edit contact
+    addressBook.editContact("Nikhil Kumar", { phoneNumber: "9999999999", city: "Kanpur" });
+
+    console.log("After Editing:");
+    addressBook.displayContacts();
+
 } catch (error) {
     console.error(error.message);
 }
