@@ -28,7 +28,7 @@ class Contact {
 
     validateAddress(value, fieldName) {
         if (value.length < 2) {
-            throw new Error(`${fieldName} must have at least 2 characters.`);
+            throw new Error(`${fieldName} must have at least 4 characters.`);
         }
     }
 
@@ -83,14 +83,38 @@ class AddressBook {
         }
 
         // Updating fields if provided in updatedDetails
-        if (updatedDetails.firstName) contact.validateName(updatedDetails.firstName, "First Name"), contact.firstName = updatedDetails.firstName;
-        if (updatedDetails.lastName) contact.validateName(updatedDetails.lastName, "Last Name"), contact.lastName = updatedDetails.lastName;
-        if (updatedDetails.address) contact.validateAddress(updatedDetails.address, "Address"), contact.address = updatedDetails.address;
-        if (updatedDetails.city) contact.validateAddress(updatedDetails.city, "City"), contact.city = updatedDetails.city;
-        if (updatedDetails.state) contact.validateAddress(updatedDetails.state, "State"), contact.state = updatedDetails.state;
-        if (updatedDetails.zip) contact.validateZip(updatedDetails.zip), contact.zip = updatedDetails.zip;
-        if (updatedDetails.phoneNumber) contact.validatePhoneNumber(updatedDetails.phoneNumber), contact.phoneNumber = updatedDetails.phoneNumber;
-        if (updatedDetails.email) contact.validateEmail(updatedDetails.email), contact.email = updatedDetails.email;
+        if (updatedDetails.firstName) {
+            contact.validateName(updatedDetails.firstName, "First Name");
+            contact.firstName = updatedDetails.firstName;
+        }
+        if (updatedDetails.lastName) {
+            contact.validateName(updatedDetails.lastName, "Last Name");
+            contact.lastName = updatedDetails.lastName;
+        }
+        if (updatedDetails.address) {
+            contact.validateAddress(updatedDetails.address, "Address");
+            contact.address = updatedDetails.address;
+        }
+        if (updatedDetails.city) {
+            contact.validateAddress(updatedDetails.city, "City");
+            contact.city = updatedDetails.city;
+        }
+        if (updatedDetails.state) {
+            contact.validateAddress(updatedDetails.state, "State");
+            contact.state = updatedDetails.state;
+        }
+        if (updatedDetails.zip) {
+            contact.validateZip(updatedDetails.zip);
+            contact.zip = updatedDetails.zip;
+        }
+        if (updatedDetails.phoneNumber) {
+            contact.validatePhoneNumber(updatedDetails.phoneNumber);
+            contact.phoneNumber = updatedDetails.phoneNumber;
+        }
+        if (updatedDetails.email) {
+            contact.validateEmail(updatedDetails.email);
+            contact.email = updatedDetails.email;
+        }
 
         console.log("Contact updated successfully.");
     }
@@ -103,6 +127,10 @@ class AddressBook {
         }
         this.contacts.splice(index, 1);
         console.log("Contact deleted successfully.");
+    }
+
+    getContactCount() {
+        return this.contacts.length;
     }
 
     displayContacts() {
@@ -126,12 +154,14 @@ try {
 
     console.log("Before Deleting:");
     addressBook.displayContacts();
+    console.log(`Total Contacts: ${addressBook.getContactCount()}`);
 
     // Delete contact
     addressBook.deleteContact("Nikhil Kumar");
 
     console.log("After Deleting:");
     addressBook.displayContacts();
+    console.log(`Total Contacts: ${addressBook.getContactCount()}`);
 
 } catch (error) {
     console.error(error.message);
