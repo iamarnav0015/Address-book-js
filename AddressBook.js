@@ -27,7 +27,7 @@ class Contact {
     }
 
     validateAddress(value, fieldName) {
-        if (value.length < 4) {
+        if (value.length < 2) {
             throw new Error(`${fieldName} must have at least 4 characters.`);
         }
     }
@@ -58,13 +58,39 @@ class Contact {
     }
 }
 
+class AddressBook {
+    constructor() {
+        this.contacts = [];
+    }
+
+    addContact(contact) {
+        if (this.contacts.some(c => c.phoneNumber === contact.phoneNumber || c.email === contact.email)) {
+            throw new Error("Contact with this phone number or email already exists.");
+        }
+        this.contacts.push(contact);
+        console.log("Contact added successfully.");
+    }
+
+    displayContacts() {
+        if (this.contacts.length === 0) {
+            console.log("No contacts found.");
+        } else {
+            this.contacts.forEach(contact => console.log(contact.toString() + "\n"));
+        }
+    }
+}
+
 // Example Usage
 try {
-    let contact1 = new Contact("Nikhil", "Kumar", "BHEL Jhansi", "Jhansi", "UP", "284120", "9876543210", "nikhil.kumar@gmail.com");
-    console.log(contact1.toString());
+    let addressBook = new AddressBook();
 
+    let contact1 = new Contact("Nikhil", "Kumar", "BHEL Jhansi", "Jhansi", "UP", "284120", "9876543210", "nikhil.kumar@gmail.com");
     let contact2 = new Contact("Amit", "Sharma", "Delhi NCR", "Delhi", "DL", "110001", "9123456789", "amit.sharma@gmail.com");
-    console.log(contact2.toString());
+
+    addressBook.addContact(contact1);
+    addressBook.addContact(contact2);
+
+    addressBook.displayContacts();
 } catch (error) {
     console.error(error.message);
 }
