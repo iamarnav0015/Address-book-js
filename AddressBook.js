@@ -64,9 +64,14 @@ class AddressBook {
     }
 
     addContact(contact) {
-        if (this.contacts.some(c => c.phoneNumber === contact.phoneNumber || c.email === contact.email)) {
-            throw new Error("Contact with this phone number or email already exists.");
+        let isDuplicate = this.contacts.some(
+            c => `${c.firstName} ${c.lastName}`.toLowerCase() === `${contact.firstName} ${contact.lastName}`.toLowerCase()
+        );
+
+        if (isDuplicate) {
+            throw new Error("Duplicate entry! Contact with this name already exists.");
         }
+
         this.contacts.push(contact);
         console.log("Contact added successfully.");
     }
@@ -82,7 +87,6 @@ class AddressBook {
             return;
         }
 
-        // Updating fields if provided in updatedDetails
         if (updatedDetails.firstName) {
             contact.validateName(updatedDetails.firstName, "First Name");
             contact.firstName = updatedDetails.firstName;
@@ -140,6 +144,18 @@ class AddressBook {
             this.contacts.forEach(contact => console.log(contact.toString() + "\n"));
         }
     }
+
+    getAllContactNames() {
+        return this.contacts.map(contact => `${contact.firstName} ${contact.lastName}`);
+    }
+
+    countContactsByCity(city) {
+        return this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase()).length;
+    }
+
+    countContactsByState(state) {
+        return this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase()).length;
+    }
 }
 
 // Example Usage
@@ -148,9 +164,17 @@ try {
 
     let contact1 = new Contact("Nikhil", "Kumar", "BHEL Jhansi", "Jhansi", "UP", "284120", "9876543210", "nikhil.kumar@gmail.com");
     let contact2 = new Contact("Amit", "Sharma", "Delhi NCR", "Delhi", "DL", "110001", "9123456789", "amit.sharma@gmail.com");
+    let contact3 = new Contact("Nikhil", "Kumar", "BHEL Jhansi", "Jhansi", "UP", "284120", "9876543210", "nikhil.kumar@gmail.com"); // Duplicate
 
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
+
+    // Attempt to add duplicate contact
+    try {
+        addressBook.addContact(contact3);
+    } catch (error) {
+        console.error(error.message);
+    }
 
     console.log("Before Deleting:");
     addressBook.displayContacts();
@@ -162,6 +186,10 @@ try {
     console.log("After Deleting:");
     addressBook.displayContacts();
     console.log(`Total Contacts: ${addressBook.getContactCount()}`);
+
+    // Count contacts by city and state
+    console.log(`Contacts in Delhi: ${addressBook.countContactsByCity("Delhi")}`);
+    console.log(`Contacts in UP: ${addressBook.countContactsByState("UP")}`);
 
 } catch (error) {
     console.error(error.message);
